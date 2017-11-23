@@ -47,9 +47,12 @@
 	 *   Selector class name.
 	 */
 	function popup($popupElement) {
+		// Add new class clone element and remove hidden class.
 		$popupElement.addClass('block-exit-modal-popup-shown');
 		var clonedElement = $popupElement.clone();
 		clonedElement.removeClass('visually-hidden');
+
+		// Create Drupal.dialog object.
 		var confirmationDialog = Drupal.dialog(clonedElement, {
 			title: drupalSettings.exit_modal_block.label,
 			dialogClass: 'block-exit-modal-popup',
@@ -64,6 +67,8 @@
 				$popupElement.removeClass('block-exit-modal-popup-shown');
 			}
 		});
+
+		// Display modal.
 		confirmationDialog.showModal();
 	}
 
