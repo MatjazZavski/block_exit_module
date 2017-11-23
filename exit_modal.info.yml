@@ -1,0 +1,5 @@
+name: exit_modal
+type: module
+description: Exit modal popup containing anything you want!
+core: 8.x
+package: Exit Modal

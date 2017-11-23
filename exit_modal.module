@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains exit_modal.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function exit_modal_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the exit_modal module.
+    case 'help.page.exit_modal':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Exit modal popup containing anything you want!') . '</p>';
+      return $output;
+
+    default:
+  }
+}
