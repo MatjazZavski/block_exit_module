@@ -107,7 +107,7 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
     $blocks = $this->blockManager->getDefinitionsForContexts($this->contextRepository->getAvailableContexts());
 
     // Set options for select form element.
-    $options = ['0' => t('Select a block')];
+    $options = ['' => t('Select a block')];
     foreach ($blocks as $block_id => $block) {
       if ($block_id == 'exit_modal')
         continue;
@@ -118,7 +118,7 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
     $form['block'] = [
       '#type' => 'select',
       '#title' => $this->t('Select a block to display in modal'),
-      '#default_value' => isset($this->configuration['block']) ? $this->configuration['block'] : '0',
+      '#default_value' => isset($this->configuration['block']) ?: '',
       '#options' => $options,
       '#weight' => 10,
       '#description' => $this->t('Selected block will be displayed in modal.'),
