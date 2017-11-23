@@ -118,7 +118,7 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
     $form['block'] = [
       '#type' => 'select',
       '#title' => $this->t('Select a block to display in modal'),
-      '#default_value' => isset($this->configuration['block']) ?: '',
+      '#default_value' => (isset($this->configuration['block'])) ? $this->configuration['block'] : '',
       '#options' => $options,
       '#weight' => 10,
       '#description' => $this->t('Selected block will be displayed in modal.'),
@@ -203,7 +203,7 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
     $block['#attached']['library'][] = 'exit_modal/exit_modal';
     $block['#attached']['drupalSettings']['exit_modal_block']['label'] = $this->configuration['label'];
     $block['#attributes']['class'][] = "block-modal-exit-modal";
-    $block['#attributes']['class'][] = ($display_on_page == 1) ?: 'visually-hidden';
+    $block['#attributes']['class'][] = ($display_on_page == TRUE) ?: 'visually-hidden';
     return $block;
   }
 
