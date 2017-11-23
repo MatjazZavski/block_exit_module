@@ -7,3 +7,4 @@ exit_modal:
     js/exit-modal.js: {}
   dependencies:
     - core/jquery
+    - core/drupal.dialog.ajax

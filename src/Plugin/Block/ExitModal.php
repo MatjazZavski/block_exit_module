@@ -8,6 +8,8 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Plugin\Context\LazyContextRepository;
+use Drupal\Core\Block\BlockManager;
 
 /**
  * Provides a 'ExitModal' block.
@@ -34,6 +36,20 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
   protected $currentUser;
 
   /**
+   * The context repository.
+   *
+   * @var \Drupal\Core\Plugin\Context\LazyContextRepository
+   */
+  protected $contextRepository;
+
+  /**
+   * The block manager.
+   *
+   * @var \Drupal\Core\Block\BlockManager
+   */
+  protected $blockManager;
+
+  /**
    * Constructs a new ExitModal object.
    *
    * @param array $configuration
@@ -46,16 +62,24 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
    *   The factory for configuration objects.
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user.
+   * @param \Drupal\Core\Plugin\Context\LazyContextRepository $context_repository
+   *   The context repository.
+   * @param \Drupal\Core\Block\BlockManager $block_manager
+   *   The block manager.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
     ConfigFactoryInterface $config_factory,
-    AccountProxyInterface $current_user
+    AccountProxyInterface $current_user,
+    LazyContextRepository $context_repository,
+    BlockManager $block_manager
   ) {
     $this->configFactory = $config_factory;
     $this->currentUser = $current_user;
+    $this->contextRepository = $context_repository;
+    $this->blockManager = $block_manager;
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
   }
@@ -69,7 +93,9 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
       $plugin_id,
       $plugin_definition,
       $container->get('config.factory'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('context.repository'),
+      $container->get('plugin.manager.block')
     );
   }
 
@@ -77,11 +103,9 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    // Load block manager and context repository service.
-    $blockManager = \Drupal::service('plugin.manager.block');
-    $contextRepository = \Drupal::service('context.repository');
     // Get blocks definition
-    $blocks = $blockManager->getDefinitionsForContexts($contextRepository->getAvailableContexts());
+    $blocks = $this->blockManager->getDefinitionsForContexts($this->contextRepository->getAvailableContexts());
+
     // Set options for select form element.
     $options = ['0' => t('Select a block')];
     foreach ($blocks as $block_id => $block) {
@@ -89,6 +113,7 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
         continue;
       $options[$block_id] = $block['admin_label'];
     }
+
     // Select form element
     $form['block'] = [
       '#type' => 'select',
@@ -118,10 +143,22 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function defaultConfiguration() {
     // Set default values for selected block and show on page checkbox.
-    $this->configuration['block'] = '0';
-    $this->configuration['exit_modal_display'] = 0;
+    $this->configuration['block'] = '';
+    $this->configuration['exit_modal_display'] = FALSE;
 
     return parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::validateConfigurationForm($form, $form_state);
+
+    // If user didn't set block display error.
+    if($form_state->getValue('block') == '') {
+      $form_state->setErrorByName('block', 'You have to select block');
+    }
   }
 
   /**
@@ -169,4 +206,5 @@ class ExitModal extends BlockBase implements ContainerFactoryPluginInterface {
     $block['#attributes']['class'][] = ($display_on_page == 1) ?: 'visually-hidden';
     return $block;
   }
+
 }
