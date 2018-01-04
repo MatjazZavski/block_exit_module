@@ -2,7 +2,7 @@
 
 Exit Modal provides a simple way to display a block as an exit popup modal. When a user makes a move to close the current browser tab, the modal appears. The content of the modal can be text or the contents of another block.
 
-##Installation
+## Installation
 
 Download and unpack the Exit Modal module directory in your modules folder.
 Go to "Administer" -> "Modules" and enable the Exit Modal module.
