@@ -1,5 +1,5 @@
-name: exit_modal
+name: Exit Modal
 type: module
-description: Exit modal popup containing anything you want!
+description: Exit modal popup containing any block you want.
 core: 8.x
 package: Exit Modal
