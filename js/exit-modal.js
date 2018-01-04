@@ -14,7 +14,7 @@
 	 * Main logic for displaying Drupal modal.
 	 */
 	function exitModalWatch() {
-		var $popupElement = $('.block-modal-exit-modal');
+    var $popupElement = $('.block-modal-exit-modal');
 		// Remove all elements from array if there are found more than 1.
 		if ($popupElement.length > 1) {
 			$popupElement.splice(0, 1);
@@ -23,21 +23,19 @@
 		else if ($popupElement.length === 0) {
 			return;
 		}
+		var quit = false;
 		// On page exit - only begin after a couple of seconds to avoid
 		// accidental triggering.
-		var quit = false;
-		setTimeout(function () {
-			$(document).bind('mousemove', function (e) {
-				if (e.pageY - $(window).scrollTop() <= 15) {
-					if (!quit) {
-						quit = true;
-						popup($popupElement);
-					} else {
-						return null;
-					}
-				}
-			});
-		}, 2000);
+    $(document).bind('mouseleave', function (e) {
+      if (e.pageY - $(window).scrollTop() <= 15) {
+        if (!quit) {
+          quit = true;
+          popup($popupElement);
+        } else {
+          return null;
+        }
+      }
+    });
 	}
 
 	/**
