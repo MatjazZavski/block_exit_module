@@ -1,6 +1,6 @@
 ## About This Module
 
-Exit Modal provides a simple way to display a block as an exit popup modal. When a user makes a move to close the current browser tab, the modal appears. The content of the modal can be text or the contents of another block.
+Exit Modal provides a simple way to display a block as an exit popup modal. When a user makes a move to close the current browser tab, the modal appears. The content of the modal can any block.
 
 ## Installation
 

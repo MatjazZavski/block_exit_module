@@ -16,7 +16,10 @@ function exit_modal_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.exit_modal':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Exit modal popup containing anything you want!') . '</p>';
+      $output .= '<p>' . t('Exit Modal provides a simple way to display a block as an exit popup modal. When a user makes a move to close the current browser tab, the modal appears. The content of the modal can any block.') . '</p>';
+      $output .= '<h3>' . t('Configuration') . '</h3>';
+      $output .= '<p>' . t('The module creates a new block called "Exit Modal" which can be configured through the blocks page: "Structure" -> "Blocks". You can choose to display the contents of another block. Place the block just as you would any other block.') . '</p>';
+      $output .= '<p>' . t('You can also display the block in its region as normal by ticking "Also show on page". Triggering the exit modal requires a certain user behaviour, which may not always happen. This option provides a backup.') . '</p>';
       return $output;
 
     default:
